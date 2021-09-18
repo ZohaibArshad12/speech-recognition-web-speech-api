@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 
 let speechRecognition = null;
+let finalTranscript = null;
 
 const SpeechRecognition = () => {
-  const [finalTranscript, setFinalTranscript] = useState('');
+  // const [finalTranscript, setFinalTranscript] = useState('');
 
   useEffect(() => {
     if (window.webkitSpeechRecognition) {
@@ -15,6 +16,7 @@ const SpeechRecognition = () => {
       // speechRecognition.lang = document.querySelector('#select_dialect').value;
 
       speechRecognition.onstart = () => {
+        finalTranscript = '';
         document.querySelector('#status').style.display = 'block';
       };
       speechRecognition.onerror = () => {
@@ -31,9 +33,13 @@ const SpeechRecognition = () => {
 
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
-            setFinalTranscript(
-              finalTranscript + event.results[i][0].transcript
-            );
+            console.log('finalTranscript::', finalTranscript);
+
+            finalTranscript += event.results[i][0].transcript;
+
+            // setFinalTranscript(
+            //   finalTranscript + event.results[i][0].transcript
+            // );
           } else {
             interim_transcript += event.results[i][0].transcript;
           }
