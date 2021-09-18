@@ -1,5 +1,5 @@
 // import classNamees from './SpeechRecognition.module.scss';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 let speechRecognition = null;
 let finalTranscript = null;
