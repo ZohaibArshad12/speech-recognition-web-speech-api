@@ -1,11 +1,26 @@
 // import classNamees from './SpeechRecognition.module.scss';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+const AXIOS = require('axios');
 
 let speechRecognition = null;
 let finalTranscript = null;
 
 const SpeechRecognition = () => {
   // const [finalTranscript, setFinalTranscript] = useState('');
+  const [response, setResponse] = useState('');
+
+  const getResponse = async (text) => {
+    try {
+      const result = await AXIOS.post(
+        'https://uih68qkq4l.execute-api.us-east-1.amazonaws.com/prod',
+        { text }
+      );
+      console.log('result::', result);
+      setResponse(result.data);
+    } catch (err) {
+      console.log('err::, ', err);
+    }
+  };
 
   useEffect(() => {
     if (window.webkitSpeechRecognition) {
@@ -18,6 +33,7 @@ const SpeechRecognition = () => {
       speechRecognition.onstart = () => {
         finalTranscript = '';
         document.querySelector('#status').style.display = 'block';
+        setResponse('');
       };
       speechRecognition.onerror = () => {
         document.querySelector('#status').style.display = 'none';
@@ -25,7 +41,8 @@ const SpeechRecognition = () => {
       };
       speechRecognition.onend = () => {
         document.querySelector('#status').style.display = 'none';
-        console.log('Speech Recognition Ended');
+        console.log('Speech Recognition Ended', finalTranscript);
+        getResponse(finalTranscript);
       };
 
       speechRecognition.onresult = (event) => {
@@ -109,6 +126,9 @@ const SpeechRecognition = () => {
         >
           Listenting ...
         </p>
+      </div>
+      <div className="mt-4 text-light">
+        <span className="d-flex ms-5"> Response: {response} </span>
       </div>
     </React.Fragment>
   );
