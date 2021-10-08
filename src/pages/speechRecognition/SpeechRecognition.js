@@ -1,5 +1,8 @@
 // import classNamees from './SpeechRecognition.module.scss';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import theme from '../../theme';
+
 const AXIOS = require('axios');
 
 let speechRecognition = null;
@@ -100,6 +103,14 @@ const SpeechRecognition = () => {
           id="select_dialect"
         ></select>
       </div> */}
+      <Link
+        to={{
+          pathname: '/',
+        }}
+        style={{ color: theme.palette.secondary.main }}
+      >
+        Go To Home
+      </Link>
       <h2 className="mt-4 text-light">Transcript</h2>
       <div
         className="p-3"
